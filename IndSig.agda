@@ -33,60 +33,25 @@ record ConDesc (Γₚ : Ctx) (Θᵢ : Tel Γₚ) : Set where
 IndDesc : (Γₚ : Ctx) (Θᵢ : Tel Γₚ) → Set
 IndDesc Γₚ Θᵢ = List (ConDesc Γₚ Θᵢ)
 
-helper1 :
-  {Γₚ : Ctx} {Θᵢ Θargs : Tel Γₚ}
-  {Θarit : Tel ((Γₚ ▹₃[ + ] Θargs) ^ -)}
-  {indInst : Inst ((Γₚ ▹₃[ + ] Θargs) ▹₃[ - ] Θarit) (Θᵢ [ WkTel + Θargs ∘ WkTel {Γₚ ▹₃[ + ] Θargs } - Θarit ]₃)}
-  → Inst
-    (((((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃)) ^ +) ▹₃[ - ]
-      (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃)) ^ -)
-    (Θarit [
-     ((WkTy + Θᵢ + ∘
-       (WkTel + (Θargs [ WkTy + Θᵢ + ]₃) ^ₛ +) ∘
-       WkTel {(Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃) } - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃))
-      ▹ₛᵢ[ + ]⟦ Θargs ,
-      vinst (Θargs [ WkTy + Θᵢ +  ]₃) [ WkTel {(Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃) } - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃) ]₄ ⟧)
-     ^ₛ -
-     ]₃)
-
-helper1 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst} = vinst (Θarit [ (WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs)  ]₃)
-
-helper2 :
-  {Γₚ : Ctx} {Θᵢ Θargs : Tel Γₚ}
-  {Θarit : Tel ((Γₚ ▹₃[ + ] Θargs) ^ -)}
-  {indInst : Inst ((Γₚ ▹₃[ + ] Θargs) ▹₃[ - ] Θarit) (Θᵢ [ WkTel + Θargs ∘ WkTel - Θarit ]₃)}
-  → Sub
-    ((((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃)) ▹₃[ - ]
-      (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃))
-     ^ +)
-    ((Γₚ ▹₃[ + ] Θargs) ▹₃[ - ] Θarit)
-
-helper2 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst} = ((WkTy + Θᵢ + ∘
-  (WkTel + (Θargs [ WkTy + Θᵢ + ]₃) ^ₛ +) ∘
-  (WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃)))
-  ▹ₛᵢ[ + ]⟦ Θargs , vinst (Θargs [ WkTy + Θᵢ + ]₃) [ WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃) ]₄ ⟧)
-  ▹ₛᵢ[ - ]⟦ Θarit , helper1 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst}  ⟧
-
-helper3 :
-  {Γₚ : Ctx} {Θᵢ Θargs : Tel Γₚ}
-  {Θarit : Tel ((Γₚ ▹₃[ + ] Θargs) ^ -)}
-  {indInst : Inst ((Γₚ ▹₃[ + ] Θargs) ▹₃[ - ] Θarit) (Θᵢ [ WkTel + Θargs ∘ WkTel - Θarit ]₃)}
-  → Sub
-  (((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃)) ▹₃[ - ]
-   (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃))
-  ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θᵢ [ WkTy + Θᵢ + ^ₛ + ]₃))
-helper3 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst} =
-  (WkTel + (Θargs [ WkTy + Θᵢ + ]₃) ∘
-   WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃)
-  ) ▹ₛᵢ[ + ]⟦ Θᵢ [ WkTy + Θᵢ + ^ₛ + ]₃ , indInst [ helper2 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst}  ]₄ ⟧
-
 recData :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
   → RecDesc Γₚ Θargs Θᵢ → Ty ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃))
 
 recData {Γₚ = Γₚ}{Θᵢ = Θᵢ} {Θargs = Θargs} (mkRecDesc Θarit indInst) =
   TelToPi (Θarit [ (WkTy - {Γ = (Γₚ ^ -)} Θᵢ -) ▹ₛ₃[ - ] Θargs ]₃)
-  ((tyvz + Θᵢ) [ helper3 {Γₚ} {Θᵢ} {Θargs} {Θarit} {indInst} ]₁)
+  ((tyvz + Θᵢ) [
+    (WkTel + (Θargs [ WkTy + Θᵢ + ]₃) ∘
+     WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃)
+    ) ▹ₛᵢ[ + ]⟦ Θᵢ [ WkTy + Θᵢ + ^ₛ + ]₃ , indInst [ 
+        ((WkTy + Θᵢ + ∘
+        (WkTel + (Θargs [ WkTy + Θᵢ + ]₃) ^ₛ +) ∘
+        (WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃)))
+        ▹ₛᵢ[ + ]⟦ Θargs , vinst (Θargs [ WkTy + Θᵢ + ]₃) [ WkTel - (Θarit [ WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs ]₃) ]₄ ⟧)
+        ▹ₛᵢ[ - ]⟦ Θarit , vinst (Θarit [ (WkTy - {Γₚ ^ - } Θᵢ - ▹ₛ₃[ - ] Θargs)  ]₃)  ⟧
+        ]₄ 
+      ⟧
+
+   ]₁)
 
 recDatas :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
