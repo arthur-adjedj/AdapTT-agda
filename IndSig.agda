@@ -105,16 +105,32 @@ postulate
     {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
     → Ty (Γₚ ▹₃[ + ] Θᵢ)
 
-  constr :
-    {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
-    (C : ConDesc Γₚ Θᵢ) → C ∈ I →
-    Tm {Γₚ ▹₃[ + ] ((conData C) [ id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧ ]₃)}
-      ((ind I) [ WkTel + (conData C [ id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧ ]₃)
-         ▹ₛᵢ[ + ]⟦ Θᵢ ,
-          (ConDesc.ιᵢ C) [
-           WkTel {(Γₚ ▹₃[ + ] C .ConDesc.Θargs)} + (recDatas (C .ConDesc.Θrec) [
-            ((id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧) ∘
-            WkTel + (C .ConDesc.Θargs)) ▹ₛᵢ[ + ]⟦ C .ConDesc.Θargs [ WkTy + Θᵢ + ]₃ , vinst (C .ConDesc.Θargs) ⟧
-           ]₃)
-          ]₄ ⟧  ]₁
-      )
+assocIssueFix : 
+  {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : Ty (Γₚ ▹₃[ + ] Θᵢ))
+  (Θargs : Tel Γₚ) → 
+  ( WkTy + Θᵢ + 
+    ∘ ((id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧) ) 
+    ∘ (WkTel + Θargs) 
+  )
+  ≡ 
+  WkTel + Θargs
+  
+assocIssueFix {Γₚ} {Θᵢ} I Θargs = sym (∘assoc (WkTy + Θᵢ +) (id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧) (WkTel + Θargs))
+
+{-#REWRITE assocIssueFix #-}
+
+postulate
+ constr :
+   {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
+   (C : ConDesc Γₚ Θᵢ) → C ∈ I →
+   Tm {Γₚ ▹₃[ + ] ((conData C) [ id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧ ]₃)}
+     ((ind I) [ WkTel + (conData C [ id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧ ]₃)
+        ▹ₛᵢ[ + ]⟦ Θᵢ ,
+         (ConDesc.ιᵢ C) [
+          WkTel {(Γₚ ▹₃[ + ] C .ConDesc.Θargs)} + (recDatas (C .ConDesc.Θrec) [
+           ((id _ ▸ₛ[ + ]⟦ Θᵢ , ind I ⟧) ∘
+           WkTel + (C .ConDesc.Θargs)) ▹ₛᵢ[ + ]⟦ C .ConDesc.Θargs [ WkTy + Θᵢ + ]₃ , vinst (C .ConDesc.Θargs) ⟧
+          ]₃)
+         ]₄ ⟧  ]₁
+     )
+
