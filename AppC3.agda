@@ -50,6 +50,15 @@ postulate
 
 -- SubCompDual
   ∘^- : {Γ Δ Ξ : Ctx} {σ : Sub Γ Δ} {τ : Sub Ξ Γ} → (σ ∘ τ) ^ₛ - ≡ (σ ^ₛ -) ∘ (τ ^ₛ -)
+  {-#REWRITE ∘^- #-}
+
+-- TransWhiskerLeftDual
+  whiskerLeft^-  : {Γ Δ Ξ : Ctx} {σ σ' : Sub Γ Δ} (τ : Sub Δ Ξ) (μ : Trans Γ Δ σ σ') →
+    (whiskerLeft τ μ) ^ₘ - ≡ whiskerLeft (τ ^ₛ -) (μ ^ₘ -)
+
+-- TransWhiskerRightDual
+  whiskerRight^- : {Γ Δ Ξ : Ctx} {τ τ' : Sub Δ Ξ} (ν : Trans Δ Ξ τ τ') (σ : Sub Γ Δ) →
+    (whiskerRight ν σ) ^ₘ - ≡ whiskerRight (ν ^ₘ -) (σ ^ₛ -)
 
 -- TransIdDual
   id^ₘ- : {Γ Δ : Ctx} {σ : Sub Γ Δ} → idₘ {σ = σ} ^ₘ - ≡ idₘ
