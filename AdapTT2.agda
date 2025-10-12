@@ -525,10 +525,10 @@ postulate
   ⟦id⟧₃ : {Γ Δ : Ctx} {σ : Sub Γ Δ} {Θ : Tel Δ} → Θ ⟦ idₘ {σ = σ} ⟧₃ ≡ idₜₐ
 
 -- SubTelAdTransTel
-  placeholder : {!!}
+  SubTelAdTransTel : {Γ Δ Ξ : Ctx} {Θ : Tel Δ} {σ τ : Sub Γ Δ} {μ : Trans Γ Δ σ τ} (ξ : Sub Ξ Γ) → (Θ ⟦ μ ⟧₃)[ ξ ]ₜₐ ≡ Θ ⟦ whiskerRight μ ξ ⟧₃
 
 -- TransTelSubTel
-  placeholder2 : {!!}
+  TransTelSubTel : {Γ Δ Ξ : Ctx} {Θ : Tel Δ}  {σ : Sub Ξ Δ} {τ ξ : Sub Γ Ξ} {𝜈 : Trans Γ Ξ τ ξ} → (Θ [ σ ]₃)⟦ 𝜈 ⟧₃ ≡  Θ ⟦ whiskerLeft σ 𝜈 ⟧₃
 
 -- InstTransTel
   InstTransTel : {Γ Δ : Ctx} {σ τ : Sub Γ Δ} {A : Tel Δ} (t : Inst Δ A) (μ : Trans Γ Δ σ τ) → (teladapt (A ⟦ μ ⟧₃) (t [ σ ]₄)) ≡ (t [ τ ]₄)
@@ -672,9 +672,15 @@ id▹▹₃id Γ - A = refl
 ▹▹₃∘▹ - t a = refl
 {-#REWRITE id▹▹₃id #-}
 
+SubEtaWkTelCons : {Δ : Ctx} {Θ : Tel Δ} {A : Ty (Δ ▹₃[ + ] Θ)}  → (WkTel + (Θ ▹ₜ A)) ▹ₛᵢ[ + ]⟦ Θ , (vinst Θ) [ WkTm (Δ ▹₃[ + ] Θ) + A ]₄ ⟧ ≡  WkTm (Δ ▹₃[ + ] Θ) + A
+SubEtaWkTelCons {Δ} {Θ} {A} = SubEtaᵢ {Θ = Θ} (WkTm (Δ ▹₃[ + ] Θ) + A)
+{-#REWRITE SubEtaWkTelCons #-}
+
 postulate
 -- VarInstExtVarZ
-  placeholder3 : {!!}
+  VarInstExtVarZ : (d : Dir) {Γ : Ctx} {Θ : Tel (Γ ^ d)} {A : Ty ((Γ ^ d) ▹₃[ + ] Θ)} → 
+    vinst (Θ ▹ₜ A) ≡ 
+    ([ (Γ ^ d) ▹₃[ + ] (Θ ▹ₜ A) ] (vinst Θ) [ WkTm ((Γ ^ d) ▹₃[ + ] Θ) + A ]₄ ▹ᵢ  vztm) 
 
 -- SubExtInstEmp
   ▹ₛᵢ⋄ᵢ : {Γ Δ : Ctx} (σ : Sub Γ Δ)  → σ ▹ₛᵢ[ d ]⟦ ⋄ₜ , ⋄ᵢ ⟧ ≡ σ
