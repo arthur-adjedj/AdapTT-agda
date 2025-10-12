@@ -140,6 +140,9 @@ postulate
 -- TransTelId
   ⟦id⟧₃ : {Γ Δ : Ctx} {σ : Sub Γ Δ} {Θ : Tel Δ} → Θ ⟦ idₘ {σ = σ} ⟧₃ ≡ idₜₐ
 
+-- TransTelComp
+  ⟦∘ₜₐ⟧ : {Γ Δ : Ctx} (Θ : Tel Δ) {σ τ ξ : Sub Γ Δ} (μ : Trans Γ Δ σ τ) (ν : Trans Γ Δ τ ξ) -> Θ ⟦ ν *ₘ μ ⟧₃ ≡ ((Θ ⟦ ν ⟧₃) ∘ₜₐ (Θ ⟦ μ ⟧₃))
+
 -- SubTelAdTransTel
   SubTelAdTransTel : {Γ Δ Ξ : Ctx} {Θ : Tel Δ} {σ τ : Sub Γ Δ} {μ : Trans Γ Δ σ τ} (ξ : Sub Ξ Γ) → (Θ ⟦ μ ⟧₃)[ ξ ]ₜₐ ≡ Θ ⟦ whiskerRight μ ξ ⟧₃
 
@@ -441,7 +444,7 @@ foo {Θ = Θ} {Θ' = Θ'} ta σ = sym (SubHdᵢ (WkTel + (Θ [ σ ]₃)) (Θ' [ 
 {-#REWRITE foo #-}
 
 postulate
--- SubTelAdOnExtTel
+-- SubTelAdOnExtAd
   ▹ₐ[] : {Γ Δ : Ctx} {Θ Θ' : Tel Γ} (ta : TelAd Γ Θ Θ') {A : Ty (Γ ▹₃[ + ] Θ)} {A' : Ty (Γ ▹₃[ + ] Θ')} (a : Ad _ A (A' [ id Γ ▹▹₃[ + ]⟦ Θ' , ta ⟧ ]₁)) (σ : Sub Δ Γ)
     → (_▹ₜₐ_ {Θ = Θ} {Θ' = Θ'} ta {A = A} {A' = A'} a)[ σ ]ₜₐ ≡ _▹ₜₐ_ {Θ = Θ [ σ ]₃} {Θ' = Θ' [ σ ]₃} (ta [ σ ]ₜₐ) (a [ (σ ∘ WkTel + (Θ [ σ ]₃)) ▹ₛᵢ[ + ]⟦ Θ , vinst (Θ [ σ ]₃) ⟧ ]ₐ)
 
@@ -449,9 +452,10 @@ postulate
   ++ₜₐ[] : {Γ Δ : Ctx} {Θ Θ' : Tel Γ} (ta₁ : TelAd Γ Θ Θ') {A : Tel (Γ ▹₃[ + ] Θ)} {A' : Tel (Γ ▹₃[ + ] Θ')} (ta₂ : TelAd _ A (A' [ id Γ ▹▹₃[ + ]⟦ Θ' , ta₁ ⟧ ]₃)) (σ : Sub Δ Γ)
     → (ta₁ ++ₜₐ⟦ A' , ta₂ ⟧ )[ σ ]ₜₐ ≡ (ta₁ [ σ ]ₜₐ) ++ₜₐ⟦ A' [ (σ ∘ WkTel + (Θ' [ σ ]₃)) ▹ₛᵢ[ + ]⟦ Θ' , vinst (Θ' [ σ ]₃) ⟧ ]₃ , ta₂ [ (σ ∘ WkTel + (Θ [ σ ]₃)) ▹ₛᵢ[ + ]⟦ Θ , vinst (Θ [ σ ]₃) ⟧ ]ₜₐ ⟧
 
-
+--TelTransSub
   ⟦⟧[]₃ : (Γ Δ Ξ : Ctx) (τ ξ : Sub Γ Δ) (μ : Trans Γ Δ τ ξ) (σ : Sub Ξ Γ)
          (Θ : Tel Δ) → Θ ⟦ μ ⟧₃ [ σ ]ₜₐ ≡ Θ ⟦ whiskerRight μ σ ⟧₃
+--TelSubTrans
   []⟦⟧₃ : (Γ Δ Ξ : Ctx) (σ : Sub Γ Δ) (τ ξ : Sub Ξ Γ) (μ : Trans Ξ Γ τ ξ)
          (Θ : Tel Δ) → Θ [ σ ]₃ ⟦ μ ⟧₃ ≡ (Θ ⟦ whiskerLeft σ μ ⟧₃)
   {-#REWRITE []⟦⟧₃ #-}
