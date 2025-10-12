@@ -835,118 +835,160 @@ postulate
   {-#REWRITE []⟦⟧₃ #-}
 
 
--- -- {- Appendix C.6 : Type variables -}
--- -- postulate
--- --   _▸[_]⟦_,_⟧ :  (Γ : Ctx) (d : Dir) → Tel (Γ ^ d) → Dir → Ctx
--- --   _▸ₛ[_]⟦_,_⟧ : {d' : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (d : Dir) (Θ : Tel (Δ ^ d)) → Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d') → Sub Γ (Δ ▸[ d ]⟦ Θ , d' ⟧)
--- --   _▸ₘ₊_ : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
--- --           (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
--- --           {Θ : Tel (Δ ^ d)}
--- --           {A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))}
--- --           {B : Ty (Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃))}
--- --           → Ad _ A (B [ id Γ ▹▹₃[ d ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁)
--- --           → Trans Γ (Δ ▸[ d ]⟦ Θ , + ⟧) (σ ▸ₛ[ d ]⟦ Θ , A ⟧) (τ ▸ₛ[ d ]⟦ Θ , B ⟧)
--- --   _▸ₘ₋_ : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
--- --           (μ : Trans (Γ ^ (− d)) (Δ ^ (− d)) (σ ^ₛ (− d)) (τ ^ₛ (− d)))
--- --           {Θ : Tel (Δ ^ d)}
--- --           {A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ -)}
--- --           {B : Ty ((Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃)) ^ -)}
--- --           → Ad _ B (A [ id (Γ ^ -) ▹▹₃[ − d ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧  ]₁)
--- --           → Trans Γ (Δ ▸[ d ]⟦ Θ , - ⟧) (σ ▸ₛ[ d ]⟦ Θ , A ⟧) (τ ▸ₛ[ d ]⟦ Θ , B ⟧)
--- --   WkTy  : (d : Dir) {Γ : Ctx}  (Θ : Tel (Γ ^ d)) (d' : Dir) → Sub (Γ ▸[ d ]⟦ Θ , d' ⟧) Γ
--- --   tyvz  : (d : Dir) {Γ : Ctx} (Θ : Tel (Γ ^ d)) → Ty ((Γ ▸[ d ]⟦ Θ , + ⟧) ▹₃[ d ]  ( Θ [ (WkTy d {Γ} Θ +) ^ₛ d ]₃))
--- --   ▸⟦⟧^- : {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (Γ ▸[ d ]⟦ Θ , d' ⟧) ^ - ≡ (Γ ^ -) ▸[ − d ]⟦ Θ , − d' ⟧
--- --   {-#REWRITE ▸⟦⟧^- #-}
--- --   WkTy^- : {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (WkTy d {Γ} Θ d') ^ₛ - ≡ WkTy (− d) {Γ ^ - } Θ (− d')
--- --   {-#REWRITE WkTy^- #-}
--- --   ▸ₛ^- : {Γ Δ : Ctx} (σ : Sub Γ Δ) (d : Dir) (Θ : Tel (Δ ^ d)) (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) →
--- --     (_▸ₛ[_]⟦_,_⟧ {d'} σ d Θ A) ^ₛ - ≡ ((σ ^ₛ -) ▸ₛ[ − d ]⟦ Θ , A ⟧)
--- --   {-#REWRITE ▸ₛ^- #-}
+{- Appendix C.6 : Type variables -}
+postulate
+-- CtxTy
+  _▸[_]⟦_,_⟧ :  (Γ : Ctx) (d : Dir) → Tel (Γ ^ d) → Dir → Ctx
 
--- --   {-#REWRITE μ⁻⁻-spe #-}
--- --   ▸ₘ₊^- : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
--- --           (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
--- --           {Θ : Tel (Δ ^ d)}
--- --           {A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))}
--- --           {B : Ty (Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃))}
--- --           (a : Ad _ A (B [ id Γ ▹▹₃[ d ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁)) →
--- --           (_▸ₘ₊_ {d} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ^ₘ - ≡ ((μ ^ₘ -) ▸ₘ₋ a)
--- --   {-#REWRITE ▸ₘ₊^- #-}
--- --   ▸ₘ₋^- : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
--- --           (μ : Trans (Γ ^ (− d)) (Δ ^ (− d)) (σ ^ₛ (− d)) (τ ^ₛ (− d)))
--- --           {Θ : Tel (Δ ^ d)}
--- --           {A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ -)}
--- --           {B : Ty ((Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃)) ^ -)}
--- --           (a : Ad _ B (A [ id (Γ ^ -) ▹▹₃[ − d ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧  ]₁)) →
--- --           (_▸ₘ₋_ {d} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ^ₘ - ≡ ((μ ^ₘ -) ▸ₘ₊ a)
--- --   {-#REWRITE ▸ₘ₋^- #-}
+-- SubTy
+  _▸ₛ[_]⟦_,_⟧ : {d' : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (d : Dir) (Θ : Tel (Δ ^ d)) → Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d') → Sub Γ (Δ ▸[ d ]⟦ Θ , d' ⟧)
 
--- -- -- provable results to help agda's computations
+-- TransAd+
+  _▸ₘ₊_ : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+          (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
+          {Θ : Tel (Δ ^ d)}
+          {A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))}
+          {B : Ty (Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃))}
+          → Ad _ A (B [ id Γ ▹▹₃[ d ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁)
+          → Trans Γ (Δ ▸[ d ]⟦ Θ , + ⟧) (σ ▸ₛ[ d ]⟦ Θ , A ⟧) (τ ▸ₛ[ d ]⟦ Θ , B ⟧)
 
--- -- ▸⟦⟧^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (Γ ▸[ d ]⟦ Θ , d' ⟧) ^ d'' ≡ (Γ ^ d'') ▸[ d × d'' ]⟦ Θ , d' × d'' ⟧
--- -- ▸⟦⟧^d {d} {d'} {+} {Γ} {Θ} = refl
--- -- ▸⟦⟧^d {d} {d'} { - } {Γ} {Θ} = refl
--- -- {-#REWRITE ▸⟦⟧^d #-}
--- -- WkTy^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (WkTy d {Γ} Θ d') ^ₛ d'' ≡ WkTy (d × d'') {Γ ^ d'' } Θ (d' × d'')
--- -- WkTy^d {d} {d'} {+} {Γ} {Θ} = refl
--- -- WkTy^d {d} {d'} { - } {Γ} {Θ} = refl
--- -- {-#REWRITE WkTy^d #-}
--- -- ▸ₛ^d : {d d' d'' : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel (Δ ^ d)) (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) →
--- --        (_▸ₛ[_]⟦_,_⟧ {d'} σ d Θ A) ^ₛ d'' ≡ ((σ ^ₛ d'') ▸ₛ[ d × d'' ]⟦ Θ , A ⟧)
--- -- ▸ₛ^d {d} {d'} {+} {Γ} {Δ} σ Θ A = refl
--- -- ▸ₛ^d {d} {d'} { - } {Γ} {Δ} σ Θ A = refl
--- -- {-#REWRITE ▸ₛ^d #-}
+-- TransAd-
+  _▸ₘ₋_ : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+          (μ : Trans (Γ ^ (− d)) (Δ ^ (− d)) (σ ^ₛ (− d)) (τ ^ₛ (− d)))
+          {Θ : Tel (Δ ^ d)}
+          {A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ -)}
+          {B : Ty ((Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃)) ^ -)}
+          → Ad _ B (A [ id (Γ ^ -) ▹▹₃[ − d ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧  ]₁)
+          → Trans Γ (Δ ▸[ d ]⟦ Θ , - ⟧) (σ ▸ₛ[ d ]⟦ Θ , A ⟧) (τ ▸ₛ[ d ]⟦ Θ , B ⟧)
 
--- -- lemma₆ : (d : Dir) {Γ Δ : Ctx} {Θ : Tel (Δ ^ d)} {σ τ : Sub Γ Δ} (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
--- --          (ι : Inst (Δ ^ d) Θ) →
--- --          (id Γ ▹▹₃[ d ]⟦ Θ [ τ ^ₛ d ]₃ , Θ ⟦ μ ⟧₃ ⟧) ∘ (id Γ ▹ₛᵢ[ d ]⟦ Θ [ σ ^ₛ d ]₃ , ι [ σ ^ₛ d ]₄ ⟧)  ≡
--- --          id Γ ▹ₛᵢ[ d ]⟦ Θ [ τ ^ₛ d ]₃ , ι [ τ ^ₛ d ]₄ ⟧
--- -- lemma₆ d {Γ} {Δ} {Θ} {σ} {τ}  μ ι = ▹▹₃∘▹ d {Γ = Γ} {Δ = Γ} {σ = id Γ} {τ = id Γ}{A = Θ [ σ ^ₛ d ]₃} {B = Θ [ τ ^ₛ d ]₃} (ι [ σ ^ₛ d ]₄) (Θ ⟦ μ ⟧₃)
--- -- {-#REWRITE lemma₆ #-}
+-- WkTy
+  WkTy  : (d : Dir) {Γ : Ctx}  (Θ : Tel (Γ ^ d)) (d' : Dir) → Sub (Γ ▸[ d ]⟦ Θ , d' ⟧) Γ
 
--- -- lemma₇ :  (Γ : Ctx) (Δ : Ctx) (σ : Sub Γ Δ) (τ : Sub Γ Δ)
--- --           (μ : Trans Γ Δ σ τ) (Θ : Tel Δ) (ι : Inst Γ (Θ [ σ ]₃)) →
--- --           ((Θ ⟦ μ ⟧₃) [ WkTel + (Θ [ σ ]₃) ]ₜₐ) [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₜₐ ≡ Θ ⟦ μ ⟧₃
--- -- lemma₇ Γ Δ σ τ μ Θ ι = [∘]ₜₐ (Θ ⟦ μ ⟧₃) (WkTel + (Θ [ σ ]₃)) (id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧)
--- -- {-#REWRITE lemma₇ #-}
+-- VarZTy
+  tyvz  : (d : Dir) {Γ : Ctx} (Θ : Tel (Γ ^ d)) → Ty ((Γ ▸[ d ]⟦ Θ , + ⟧) ▹₃[ d ]  ( Θ [ (WkTy d {Γ} Θ +) ^ₛ d ]₃))
 
+-- CtxTyDual
+  ▸⟦⟧^- : {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (Γ ▸[ d ]⟦ Θ , d' ⟧) ^ - ≡ (Γ ^ -) ▸[ − d ]⟦ Θ , − d' ⟧
+  {-#REWRITE ▸⟦⟧^- #-}
 
--- -- postulate
--- --   SubTlTy : {Γ Δ : Ctx} {σ : Sub Γ Δ} {d d' : Dir} {Θ : Tel (Δ ^ d)} (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) → (WkTy d Θ d') ∘ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ≡ σ
--- --   {-#REWRITE SubTlTy #-}
--- --   SubHdTy : {d : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel (Δ ^ d))
--- --             (A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))) (ι : Inst (Γ ^ d) (Θ [ σ ^ₛ d ]₃)) →
--- --             (tyvz d {Δ} Θ) [ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ▹ₛᵢ[ d ]⟦ Θ [ (WkTy d {Δ} Θ +) ^ₛ d ]₃ , ι ⟧ ]₁ ≡ A [ id Γ ▹ₛᵢ[ d ]⟦ Θ [ σ ^ₛ d ]₃ , ι ⟧ ]₁
--- --   {-#REWRITE SubHdTy #-}
--- --   SubEtaTy : {Γ Δ : Ctx} {A : Tel (Δ ^ d)} (σ : Sub Γ (Δ ▸[ d ]⟦ A  , + ⟧)) →
--- --              ((WkTy d A +) ∘ σ) ▸ₛ[ d ]⟦ A , tyvz d {Γ = Δ} A [ σ ▹▹₃[ d ]⟦ A [ WkTy + A d ]₃ , idₜₐ ⟧  ]₁ ⟧ ≡ σ
--- --   {-#REWRITE SubEtaTy #-}
+-- WkTyDual
+  WkTy^- : {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (WkTy d {Γ} Θ d') ^ₛ - ≡ WkTy (− d) {Γ ^ - } Θ (− d')
+  {-#REWRITE WkTy^- #-}
 
--- -- SubHdTy+ : {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel Δ) (A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))) (ι : Inst Γ (Θ [ σ ]₃)) →
--- --             (tyvz + {Δ} Θ) [ (σ ▸ₛ[ + ]⟦ Θ , A ⟧) ▹ₛᵢ[ + ]⟦ Θ [ WkTy + {Δ} Θ + ]₃ , ι ⟧ ]₁ ≡ A [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ^ₛ + ]₃ , ι ⟧ ]₁
--- -- SubHdTy+ σ = SubHdTy {+} σ
--- -- {-#REWRITE SubHdTy+ #-}
+-- SubTyDual
+  ▸ₛ^- : {Γ Δ : Ctx} (σ : Sub Γ Δ) (d : Dir) (Θ : Tel (Δ ^ d)) (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) →
+    (_▸ₛ[_]⟦_,_⟧ {d'} σ d Θ A) ^ₛ - ≡ ((σ ^ₛ -) ▸ₛ[ − d ]⟦ Θ , A ⟧)
+  {-#REWRITE ▸ₛ^- #-}
 
--- -- postulate
--- --   whisker▸ :
--- --     (Γ : Ctx) (Δ : Ctx) (σ : Sub Γ Δ) (τ : Sub Γ Δ)
--- --     (μ : Trans Γ Δ σ τ) (Θ : Tel Δ)
--- --     {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))} {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
--- --     (a : Ad (Γ ▹₃[ + ] (Θ [ σ ]₃)) A (B [ id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁))
--- --     → whiskerLeft (WkTy + Θ +) (_▸ₘ₊_ {+} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ≡ μ
--- --   {-#REWRITE whisker▸ #-}
+-- TransAd+Dual
+  {-#REWRITE μ⁻⁻-spe #-}
+  ▸ₘ₊^- : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+          (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
+          {Θ : Tel (Δ ^ d)}
+          {A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))}
+          {B : Ty (Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃))}
+          (a : Ad _ A (B [ id Γ ▹▹₃[ d ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁)) →
+          (_▸ₘ₊_ {d} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ^ₘ - ≡ ((μ ^ₘ -) ▸ₘ₋ a)
+  {-#REWRITE ▸ₘ₊^- #-}
 
--- --   TransHdAd : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
--- --               (μ : Trans Γ Δ σ τ)
--- --               {Θ : Tel Δ}
--- --               {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))}
--- --               {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
--- --               (a : Ad (Γ ▹₃[ + ] (Θ [ σ ]₃)) A (B [ id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁))
--- --               (ι : Inst Γ (Θ [ σ ]₃)) →
--- --               (tyvz + {Δ} Θ ⟦ (_▸ₘ₊_ {+} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ▹ₘᵢ₊⟦ Θ [ WkTy + Θ + ]₃ , ι ⟧ ⟧) ≡ (a [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₐ)
+-- TransAd-Dual
+  ▸ₘ₋^- : {d : Dir} {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+          (μ : Trans (Γ ^ (− d)) (Δ ^ (− d)) (σ ^ₛ (− d)) (τ ^ₛ (− d)))
+          {Θ : Tel (Δ ^ d)}
+          {A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ -)}
+          {B : Ty ((Γ ▹₃[ d ] (Θ [ τ ^ₛ d ]₃)) ^ -)}
+          (a : Ad _ B (A [ id (Γ ^ -) ▹▹₃[ − d ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧  ]₁)) →
+          (_▸ₘ₋_ {d} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ^ₘ - ≡ ((μ ^ₘ -) ▸ₘ₊ a)
+  {-#REWRITE ▸ₘ₋^- #-}
+
+-- provable results to help agda's computations
+
+▸⟦⟧^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (Γ ▸[ d ]⟦ Θ , d' ⟧) ^ d'' ≡ (Γ ^ d'') ▸[ d × d'' ]⟦ Θ , d' × d'' ⟧
+▸⟦⟧^d {d} {d'} {+} {Γ} {Θ} = refl
+▸⟦⟧^d {d} {d'} { - } {Γ} {Θ} = refl
+{-#REWRITE ▸⟦⟧^d #-}
+WkTy^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (WkTy d {Γ} Θ d') ^ₛ d'' ≡ WkTy (d × d'') {Γ ^ d'' } Θ (d' × d'')
+WkTy^d {d} {d'} {+} {Γ} {Θ} = refl
+WkTy^d {d} {d'} { - } {Γ} {Θ} = refl
+{-#REWRITE WkTy^d #-}
+▸ₛ^d : {d d' d'' : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel (Δ ^ d)) (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) →
+       (_▸ₛ[_]⟦_,_⟧ {d'} σ d Θ A) ^ₛ d'' ≡ ((σ ^ₛ d'') ▸ₛ[ d × d'' ]⟦ Θ , A ⟧)
+▸ₛ^d {d} {d'} {+} {Γ} {Δ} σ Θ A = refl
+▸ₛ^d {d} {d'} { - } {Γ} {Δ} σ Θ A = refl
+{-#REWRITE ▸ₛ^d #-}
+
+lemma₆ : (d : Dir) {Γ Δ : Ctx} {Θ : Tel (Δ ^ d)} {σ τ : Sub Γ Δ} (μ : Trans (Γ ^ d) (Δ ^ d) (σ ^ₛ d) (τ ^ₛ d))
+         (ι : Inst (Δ ^ d) Θ) →
+         (id Γ ▹▹₃[ d ]⟦ Θ [ τ ^ₛ d ]₃ , Θ ⟦ μ ⟧₃ ⟧) ∘ (id Γ ▹ₛᵢ[ d ]⟦ Θ [ σ ^ₛ d ]₃ , ι [ σ ^ₛ d ]₄ ⟧)  ≡
+         id Γ ▹ₛᵢ[ d ]⟦ Θ [ τ ^ₛ d ]₃ , ι [ τ ^ₛ d ]₄ ⟧
+lemma₆ d {Γ} {Δ} {Θ} {σ} {τ}  μ ι = ▹▹₃∘▹ d {Γ = Γ} {Δ = Γ} {σ = id Γ} {τ = id Γ}{A = Θ [ σ ^ₛ d ]₃} {B = Θ [ τ ^ₛ d ]₃} (ι [ σ ^ₛ d ]₄) (Θ ⟦ μ ⟧₃)
+{-#REWRITE lemma₆ #-}
+
+lemma₇ :  (Γ : Ctx) (Δ : Ctx) (σ : Sub Γ Δ) (τ : Sub Γ Δ)
+          (μ : Trans Γ Δ σ τ) (Θ : Tel Δ) (ι : Inst Γ (Θ [ σ ]₃)) →
+          ((Θ ⟦ μ ⟧₃) [ WkTel + (Θ [ σ ]₃) ]ₜₐ) [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₜₐ ≡ Θ ⟦ μ ⟧₃
+lemma₇ Γ Δ σ τ μ Θ ι = [∘]ₜₐ (Θ ⟦ μ ⟧₃) (WkTel + (Θ [ σ ]₃)) (id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧)
+{-#REWRITE lemma₇ #-}
 
 
--- --   ▸ₛ∘ : (Γ Δ Ξ : Ctx) (σ : Sub Γ Δ) (τ : Sub Ξ Γ) (Θ : Tel Δ) (A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))) → (_▸ₛ[_]⟦_,_⟧ {d' = +} σ + Θ A ) ∘ τ ≡ (σ ∘ τ) ▸ₛ[ + ]⟦ Θ , A [ τ ▹▹₃[ + ]⟦ Θ [ σ ]₃ , idₜₐ ⟧ ]₁ ⟧
+postulate
+-- SubTlTy
+  SubTlTy : {Γ Δ : Ctx} {σ : Sub Γ Δ} {d d' : Dir} {Θ : Tel (Δ ^ d)} (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) → (WkTy d Θ d') ∘ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ≡ σ
+  {-#REWRITE SubTlTy #-}
+
+-- SubTyExtVarZ
+  SubHdTy : {d : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel (Δ ^ d))
+            (A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))) (ι : Inst (Γ ^ d) (Θ [ σ ^ₛ d ]₃)) →
+            (tyvz d {Δ} Θ) [ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ▹ₛᵢ[ d ]⟦ Θ [ (WkTy d {Δ} Θ +) ^ₛ d ]₃ , ι ⟧ ]₁ ≡ A [ id Γ ▹ₛᵢ[ d ]⟦ Θ [ σ ^ₛ d ]₃ , ι ⟧ ]₁
+  {-#REWRITE SubHdTy #-}
+
+-- SubEtaTy
+  SubEtaTy : {Γ Δ : Ctx} {A : Tel (Δ ^ d)} (σ : Sub Γ (Δ ▸[ d ]⟦ A  , + ⟧)) →
+             ((WkTy d A +) ∘ σ) ▸ₛ[ d ]⟦ A , tyvz d {Γ = Δ} A [ σ ▹▹₃[ d ]⟦ A [ WkTy + A d ]₃ , idₜₐ ⟧  ]₁ ⟧ ≡ σ
+  {-#REWRITE SubEtaTy #-}
+
+-- Provable lemma needed for computation:
+SubHdTy+ : {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel Δ) (A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))) (ι : Inst Γ (Θ [ σ ]₃)) →
+            (tyvz + {Δ} Θ) [ (σ ▸ₛ[ + ]⟦ Θ , A ⟧) ▹ₛᵢ[ + ]⟦ Θ [ WkTy + {Δ} Θ + ]₃ , ι ⟧ ]₁ ≡ A [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ^ₛ + ]₃ , ι ⟧ ]₁
+SubHdTy+ σ = SubHdTy {+} σ
+{-#REWRITE SubHdTy+ #-}
+
+σ⁻⁻-spe : {Γ Δ : Ctx} (σ : Sub Γ (Δ ^ -)) → (σ ^ₛ -) ^ₛ - ≡ σ
+σ⁻⁻-spe = σ⁻⁻
+{-#REWRITE σ⁻⁻-spe #-}
+
+postulate
+-- TransTlAd+
+  whisker▸ :
+    (Γ : Ctx) (Δ : Ctx) (σ : Sub Γ Δ) (τ : Sub Γ Δ)
+    (μ : Trans Γ Δ σ τ) (Θ : Tel Δ)
+    {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))} {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
+    (a : Ad (Γ ▹₃[ + ] (Θ [ σ ]₃)) A (B [ id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁))
+    → whiskerLeft (WkTy + Θ +) (_▸ₘ₊_ {+} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ≡ μ
+  {-#REWRITE whisker▸ #-}
+
+-- TransTlAd-
+  whisker▸- :
+    (Γ : Ctx) (Δ : Ctx) (σ : Sub Γ (Δ ^ -)) (τ : Sub Γ (Δ ^ -))
+    (μ : Trans (Γ ^ -) Δ (σ ^ₛ -) (τ ^ₛ -)) (Θ : Tel (Δ ^ -))
+    {A : Ty ((Γ ▹₃[ + ] (Θ [ σ ]₃)) ^ -)} {B : Ty ((Γ ▹₃[ + ] (Θ [ τ ]₃)) ^ -)}
+    (a : Ad ((Γ ▹₃[ + ] (Θ [ τ ]₃)) ^ -) B ((A [ id (Γ ^ -) ▹▹₃[ - ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧ ]₁)))
+    →  whiskerLeft (WkTy + {Δ ^ - } Θ -) {!_▸ₘ₋_ {+} {Γ} {Δ ^ - } {σ} {τ} μ {Θ} {A} {B} a !} ≡ μ ^ₘ -
+    -- whiskerLeft ? (_▸ₘ₋_ {+} {Γ ^ - } {Δ} {σ ^ₛ - } {τ ^ₛ - } μ {Θ} {A} {B} a)
+
+-- TransAdEta
+
+
+-- TransHdAd
+  TransHdAd : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+              (μ : Trans Γ Δ σ τ)
+              {Θ : Tel Δ}
+              {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))}
+              {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
+              (a : Ad (Γ ▹₃[ + ] (Θ [ σ ]₃)) A (B [ id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧ ]₁))
+              (ι : Inst Γ (Θ [ σ ]₃)) →
+              (tyvz + {Δ} Θ ⟦ (_▸ₘ₊_ {+} {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ▹ₘᵢ₊⟦ Θ [ WkTy + Θ + ]₃ , ι ⟧ ⟧) ≡ (a [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₐ)
+
 
 
 -- -- These rules are not necessary for this file. Are they necessary for the other files?:
