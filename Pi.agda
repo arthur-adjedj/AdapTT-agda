@@ -37,20 +37,26 @@ _↑₋ {Γ} {Δ} {A = A} σ = (σ ∘ WkTm Γ - (A [ σ ^ₛ - ]₁)) ▹ₛ[ -
 
 {- Appendix C.7 : Rules for Π -}
 postulate
+--PiTy
   _Π_ : (A : Ty (Γ ^ -)) → Ty (Γ ▹[ - ] A) → Ty Γ
+--LamTm
   lam : {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)} → Tm B → Tm (A Π B)
+--AppTm
   app : {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)} → Tm (A Π B) → (u : Tm A) → Tm (B [ rm u ]₁)
 
+--PiSub
   Π[]₁ :
     (A : Ty (Γ ^ -)) (B : Ty (Γ ▹[ - ] A)) →
     (A Π B) [ σ ]₁ ≡ (A [ σ ^ₛ - ]₁) Π (B [ σ ↑₋ ]₁)
   {-#REWRITE Π[]₁ #-}
 
+--LamSub
   lam[]₂ :
       {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)} (t : Tm B)
       (σ : Sub Δ Γ)
       → (lam t) [ σ ]₂ ≡ lam (t [ σ ↑₋ ]₂)
 
+--AppSub
   app[]₂ :
       {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)}
       (f : Tm (A Π B)) (x : Tm A)
@@ -58,28 +64,46 @@ postulate
       → (app f x) [ σ ]₂ ≡
         {! app {A = A [ σ ^ₛ - ]₁} {B = B [ _↑₋ {A = A } σ ]₁} (f [ σ ]₂) (x [ σ ^ₛ - ]₂)  !}
 
+--β
   β :
     {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)} (b : Tm B) (x : Tm A) →
     app (lam b) x ≡ b [ rm x ]₂
 
+--η
   η :
     {Γ : Ctx}
     {A : Ty (Γ ^ -)} {B : Ty (Γ ▹[ - ] A)} (f : Tm (A Π B))→
     f ≡ lam (app (f [ WkTm Γ - A ]₂) vztm)
 
+--PiAd
+  Πad : {Γ : Ctx} {A A' : Ty (Γ ^ -)}
+    {B : Ty (Γ ▹[ - ] A)} {B' : Ty (Γ ▹[ - ] A')}
+    (a : Ad (Γ ^ -) A' A) (b : Ad (Γ ▹[ - ] A') (B [ (id Γ) ▹▹[ - , A ] a ]₁) B') 
+    → Ad Γ (A Π B) (A' Π B')
+
+--AppPiAd
+  appAd : {Γ : Ctx} (A A' : Ty (Γ ^ -)) 
+    (B : Ty (Γ ▹[ - ] A)) (B' : Ty (Γ ▹[ - ] A')) 
+    (a : Ad (Γ ^ -) A' A) (b : Ad (Γ ▹[ - ] A') (B [ (id Γ) ▹▹[ - , A ] a ]₁) B') 
+    (f : Tm (A Π B)) (u : Tm A') 
+    → app (adapt (Πad a b) f) u ≡  adapt (b [ (id Γ) ▹ₛ[ - , A' ] u ]ₐ) (app f (adapt a u))
+
 postulate
+--TelToPi
   TelToPi :
     {Γ : Ctx} (Θ : Tel (Γ ^ -)) (A : Ty (Γ ▹₃[ - ] Θ)) →
     Ty Γ
-
+--TelToPiEmp
   TelToPi⋄ₜ :
     {Γ : Ctx} (A : Ty Γ) →
     TelToPi ⋄ₜ A ≡ A
   {-# REWRITE TelToPi⋄ₜ #-}
+--TelToPiExt
   TelToPi▹ₜ :
     {Γ : Ctx} (Θ : Tel (Γ ^ -)) (A : Ty ((Γ ^ -) ▹₃[ + ] Θ)) (B : Ty (Γ ▹₃[ - ] (Θ ▹ₜ A)))→
     TelToPi {Γ = Γ} (Θ ▹ₜ A) B ≡ TelToPi Θ (A Π B)
   {-# REWRITE TelToPi▹ₜ #-}
+--TelToPiSub
   TelToPi[] :
     {Γ : Ctx} (Θ : Tel (Γ ^ -)) (A : Ty (Γ ▹₃[ - ] Θ))
     (σ : Sub Δ Γ) →
