@@ -7,3 +7,4 @@ open import AdapTT2
 open import Pi
 open import IndSig
 open import IndAd
+open import AppC6-slow
