@@ -14,6 +14,7 @@ _▹ₛ₃[_]_ {Γ = Γ} {Δ = Δ} σ d Θ = σ ▹▹₃[ d ]⟦ Θ , idₜₐ 
 
 
 {- Appendix C.8 : Inductive types -}
+--RecDescDef
 record RecDesc (Γₚ : Ctx) (Θargs Θᵢ : Tel Γₚ) : Set where
   constructor mkRecDesc
   field
@@ -23,6 +24,7 @@ record RecDesc (Γₚ : Ctx) (Θargs Θᵢ : Tel Γₚ) : Set where
 RecTel : (Γₚ : Ctx) (Θargs Θᵢ : Tel Γₚ) → Set
 RecTel Γₚ Θargs Θᵢ = List (RecDesc Γₚ Θargs Θᵢ)
 
+--ConDescDef
 record ConDesc (Γₚ : Ctx) (Θᵢ : Tel Γₚ) : Set where
   constructor mkConDesc
   field
@@ -30,13 +32,14 @@ record ConDesc (Γₚ : Ctx) (Θᵢ : Tel Γₚ) : Set where
     Θrec : RecTel Γₚ Θargs Θᵢ
     ιᵢ : Inst (Γₚ ▹₃[ + ] Θargs) (Θᵢ [ WkTel + Θargs ]₃)
 
+--DataDescDef
 IndDesc : (Γₚ : Ctx) (Θᵢ : Tel Γₚ) → Set
 IndDesc Γₚ Θᵢ = List (ConDesc Γₚ Θᵢ)
 
+--recDataDef
 recData :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
   → RecDesc Γₚ Θargs Θᵢ → Ty ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃))
-
 recData {Γₚ = Γₚ}{Θᵢ = Θᵢ} {Θargs = Θargs} (mkRecDesc Θarit indInst) =
   TelToPi (Θarit [ (WkTy - {Γ = (Γₚ ^ -)} Θᵢ -) ▹ₛ₃[ - ] Θargs ]₃)
   ((tyvz + Θᵢ) [
@@ -53,19 +56,24 @@ recData {Γₚ = Γₚ}{Θᵢ = Θᵢ} {Θargs = Θargs} (mkRecDesc Θarit indIn
 
    ]₁)
 
+--recDatas
 recDatas :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
   → RecTel Γₚ Θargs Θᵢ
   → Tel ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃))
+--𝗋𝖾𝖼𝖣𝖺𝗍𝖺𝗌Emp
 recDatas {Θargs = Θargs} [] = ⋄ₜ
+--𝗋𝖾𝖼𝖣𝖺𝗍𝖺𝗌Ext
 recDatas {Θᵢ = Θᵢ} {Θargs = Θargs} (recDesc ∷ l) =
   (recDatas {Θargs = Θargs} l) ▹ₜ ((recData recDesc) [ WkTel + (recDatas l) ]₁)
 
+--ConDataDef
 conData :{Γₚ  : Ctx} {Θᵢ : Tel Γₚ}
   → ConDesc Γₚ Θᵢ → Tel (Γₚ ▸[ + ]⟦ Θᵢ , + ⟧)
 conData {Θᵢ = Θᵢ} (mkConDesc Θargs Θrec _) = (Θargs [ WkTy + Θᵢ + ]₃) ++ₜ recDatas Θrec
 
 postulate
+--IndTy
   ind :
     {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
     → Ty (Γₚ ▹₃[ + ] Θᵢ)
@@ -85,6 +93,7 @@ assocIssueFix {Γₚ} {Θᵢ} I Θargs = sym (∘assoc (WkTy + Θᵢ +) (id Γ�
 {-#REWRITE assocIssueFix #-}
 
 postulate
+--IndCstR
  constr :
    {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
    (C : ConDesc Γₚ Θᵢ) → C ∈ I →

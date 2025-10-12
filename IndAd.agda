@@ -14,6 +14,7 @@ open import IndSig
 --{-#REWRITE ▸ₛ∘ #-}
 
 postulate
+--IndAdEqPaR
   IndAdEqPaR :
     {Γₚ Δ : Ctx} (I : IndDesc Γₚ ⋄ₜ)
     (C : ConDesc Γₚ ⋄ₜ) (∈ᵢ : C ∈ I)
@@ -23,6 +24,7 @@ postulate
     -- Agda fails to rewrite (id ▸ₛ[ + ]⟦ ⋄ₜ , ind I ⟧ ∘ σ) to (σ ▸ₛ[ + ]⟦ ⋄ₜ , (ind I) [ σ ]₁ ⟧)
      → adapt ((ind I) ⟦ μ ⟧) {! (constr I C ∈ᵢ) [ σ ▹ₛᵢ[ + ]⟦ conData C [ id Γₚ ▸ₛ[ + ]⟦ ⋄ₜ , ind I ⟧ ]₃ , arg ⟧ ]₂ !} ≡ {!  (constr I C ∈ᵢ) [ τ ▹ₛᵢ[ + ]⟦ conData C [ id Γₚ ▸ₛ[ + ]⟦ ⋄ₜ , ind I ⟧ ]₃ , teladapt (conData C [ id Γₚ  ▸ₛ[ + ]⟦ ⋄ₜ , ind I ⟧ ]₃ ⟦ μ ⟧₃) arg ⟧ ]₂ !}
 
+--IndAdEq
   IndAdEq :
     {Γₚ Δ : Ctx} {Θᵢ : Tel Γₚ} (I : IndDesc Γₚ Θᵢ)
     (C : ConDesc Γₚ Θᵢ) (∈ᵢ : C ∈ I)
