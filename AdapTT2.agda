@@ -14,7 +14,7 @@ open import AppC4
 open import AppC5
 open import AppC6
 
--- -- These rules are not necessary for this file. Are they necessary for the other files?:
+-- -- These rules are not necessary for this file. Are they necessary for the other files?
 -- {-#REWRITE *ₘassoc *ₘid id*ₘ #-}
 -- {-#REWRITE idwhiskerLeft whiskerLeftid *ₘwhiskerLeft whiskerLeft∘ idwhiskerRight whiskerRightid ∘whiskerRight whiskerRight*ₘ #-}
 -- {-#REWRITE ∘ₐassoc ∘ₐid id∘ₐ #-}
