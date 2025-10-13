@@ -5,7 +5,7 @@ This folder contains the formalisation done for the paper *AdapTT: Functoriality
 ## Building
 
 These files were compiled using Agda 2.7.0.1.
-Note that type-checking these files is quite resource-intensive, and may take a long time to compile. (Takes ~6m20s on a Ryzen 7 9800X3D/32Gb DDR5, and ~18m30s on an I7 10510U/16GB DDR4)
+Note that type-checking these files is quite resource-intensive, and may take a long time to compile. (Takes ~14m20s on a Ryzen 7 9800X3D/32Gb DDR5, and ~39m on an I7 10510U/16GB DDR4)
 
 ## Structure
 
