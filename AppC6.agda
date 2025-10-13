@@ -89,7 +89,31 @@ WkTel^-d {d} {+} {Γ} = refl
 WkTel^-d {d} { - } {Γ} = refl
 {-#REWRITE WkTel^-d #-}
 
+▸⟦⟧^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (Γ ▸[ d ]⟦ Θ , d' ⟧) ^ d'' ≡ (Γ ^ d'') ▸[ d × d'' ]⟦ Θ , d' × d'' ⟧
+▸⟦⟧^d {d} {d'} {+} {Γ} {Θ} = refl
+▸⟦⟧^d {d} {d'} { - } {Γ} {Θ} = refl
+{-#REWRITE ▸⟦⟧^d #-}
+
+WkTy^d : {d d' d'' : Dir} {Γ : Ctx} {Θ : Tel (Γ ^ d)} → (WkTy d {Γ} Θ d') ^ₛ d'' ≡ WkTy (d × d'') {Γ ^ d'' } Θ (d' × d'')
+WkTy^d {d} {d'} {+} {Γ} {Θ} = refl
+WkTy^d {d} {d'} { - } {Γ} {Θ} = refl
+{-#REWRITE WkTy^d #-}
+▸ₛ^d : {d d' d'' : Dir} {Γ Δ : Ctx} (σ : Sub Γ Δ) (Θ : Tel (Δ ^ d)) (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) →
+       (_▸ₛ[_]⟦_,_⟧ {d'} σ d Θ A) ^ₛ d'' ≡ ((σ ^ₛ d'') ▸ₛ[ d × d'' ]⟦ Θ , A ⟧)
+▸ₛ^d {d} {d'} {+} {Γ} {Δ} σ Θ A = refl
+▸ₛ^d {d} {d'} { - } {Γ} {Δ} σ Θ A = refl
+{-#REWRITE ▸ₛ^d #-}
+
 postulate
+-- SubTlTy
+  SubTlTy : {Γ Δ : Ctx} {σ : Sub Γ Δ} {d d' : Dir} {Θ : Tel (Δ ^ d)} (A : Ty ((Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃)) ^ d')) → (WkTy d Θ d') ∘ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ≡ σ
+  {-#REWRITE SubTlTy #-}
+  
+-- SubEtaTy
+  SubEtaTy : {Γ Δ : Ctx} {A : Tel (Δ ^ d)} (σ : Sub Γ (Δ ▸[ d ]⟦ A  , + ⟧)) →
+             ((WkTy d A +) ∘ σ) ▸ₛ[ d ]⟦ A , tyvz d {Γ = Δ} A [ σ ▹▹₃[ d ]⟦ A [ WkTy + A d ]₃ , idₜₐ ⟧  ]₁ ⟧ ≡ σ
+  {-#REWRITE SubEtaTy #-}
+
 -- TransAd++Dual
   ▸ₘ₊₊^- : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
           (μ : Trans Γ Δ σ τ)

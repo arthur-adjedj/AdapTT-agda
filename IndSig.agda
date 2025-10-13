@@ -82,13 +82,13 @@ assocIssueFix :
   {Γₚ  : Ctx} {Θᵢ : Tel Γₚ} (I : Ty (Γₚ ▹₃[ + ] Θᵢ))
   (Θargs : Tel Γₚ) → 
   ( WkTy + Θᵢ + 
-    ∘ ((id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧) ) 
+    ∘ (id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧)
     ∘ (WkTel + Θargs) 
   )
   ≡ 
   WkTel + Θargs
-  
-assocIssueFix {Γₚ} {Θᵢ} I Θargs = sym (∘assoc (WkTy + Θᵢ +) (id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧) (WkTel + Θargs))
+
+assocIssueFix {Γₚ} {Θᵢ} I Θargs = sym (∘assoc ( WkTy + Θᵢ + ) (id Γₚ ▸ₛ[ + ]⟦ Θᵢ , I ⟧) (WkTel + Θargs))
 
 {-#REWRITE assocIssueFix #-}
 

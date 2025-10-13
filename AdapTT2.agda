@@ -5,14 +5,14 @@ open import Agda.Primitive
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Equality.Rewrite
 
-open import Std
-open import Dir
-open import AppC1
-open import AppC2
-open import AppC3
-open import AppC4
-open import AppC5
-open import AppC6
+open import Std   public
+open import Dir   public
+open import AppC1 public
+open import AppC2 public
+open import AppC3 public
+open import AppC4 public
+open import AppC5 public
+open import AppC6 public
 
 -- -- These rules are not necessary for this file. Are they necessary for the other files?
 -- {-#REWRITE *ₘassoc *ₘid id*ₘ #-}
