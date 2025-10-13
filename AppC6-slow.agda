@@ -90,21 +90,7 @@ SubEtaTy₋ : {Γ Δ : Ctx} {Θ : Tel (Δ ^ -)} {σ : Sub Γ (Δ ▸[ - ]⟦ Θ 
      ((WkTy - Θ + ∘ σ) ▸ₛ[ - ]⟦ Θ , tyvz - {Γ = Δ} Θ [ σ ▹▹₃[ - ]⟦ Θ [ WkTy + Θ - ]₃ , idₜₐ ⟧ ]₁ ⟧) ≡ σ
 SubEtaTy₋ {σ = σ} = SubEtaTy { - } σ
 {-#REWRITE SubEtaTy₋ #-}
-
--- -- vinst Θ [ σ ▹ₛᵢ[ + ]⟦ Θ , t ⟧ ]₄ ≡ t
--- foo1 : {Γ Δ : Ctx}
---           {Θ : Tel Δ}
---           {σ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
---           {τ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
---           (μ : Trans Γ (Δ ▸[ + ]⟦ Θ , + ⟧) σ τ) →
---   vinst ((Θ [ WkTy + Θ + ]₃) [ τ ^ₛ + ]₃) [
---     ((WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ^ₛ +) ▹ₛᵢ[ + ]⟦ Θ [ WkTy + Θ + ∘ τ ]₃ , teladapt ((Θ ⟦ whiskerLeft (WkTy + Θ +) μ ⟧₃) [ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ]ₜₐ) ((vinst (Θ [ WkTy + Θ + ∘ σ ]₃))) ⟧) ^ₛ + ]₄
---    ≡ teladapt ((Θ ⟦ whiskerLeft (WkTy + Θ +) μ ⟧₃) [ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ]ₜₐ) (vinst (Θ [ WkTy + Θ + ∘ σ ]₃))
--- foo1 {Γ} {Δ} {Θ} {σ} {τ} μ = SubHdᵢ (WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃)) (Θ [ WkTy + Θ + ∘ τ ]₃) (teladapt ((Θ ⟦ whiskerLeft (WkTy + Θ +) μ ⟧₃) [ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ]ₜₐ) (vinst (Θ [ WkTy + Θ + ∘ σ ]₃)))
--- {-#REWRITE foo1 #-}
-
-
-{- Derivable operation -}
+-- {- Derivable operation -}
 
 {-#REWRITE ⟦⟧[]₃ #-}
 _w▹▹₃₊⟦_,_⟧ : {Γ Δ : Ctx}
@@ -128,15 +114,31 @@ _w▹▹₃₊⟦_,_⟧ {Γ} {Δ} {σ} {τ} μ {Θ} Θ' t = (whiskerRight μ (Wk
 --               Trans (Γ ▹₃[ - ] Θ) (Δ ▹₃[ - ] Θ') (τ ▹▹₃[ - ]⟦ Θ' , (Θ' ⟦ μ ^ₘ - ⟧₃) ∘ₜₐ t ⟧) (σ ▹▹₃[ - ]⟦ Θ' , t ⟧)
 -- _w▹▹₃₋⟦_,_⟧ {Γ} {Δ} {σ} {τ} μ {Θ} Θ' t = (whiskerRight μ (WkTel - Θ)) ▹ₘᵢ₋⟦ Θ' , teladapt (t [ WkTel {Γ = Γ ^ - } + Θ ]ₜₐ) (vinst Θ) ⟧
 
+-- foo2 : {Γ Δ : Ctx}
+--        {Θ : Tel Δ}
+--        {σ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
+--        {τ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
+--        (μ : Trans Γ (Δ ▸[ + ]⟦ Θ , + ⟧) σ τ) →
+--   teladapt ((((Θ [ WkTy + Θ + ]₃) ⟦ μ ⟧₃) ∘ₜₐ idₜₐ) [ WkTel + ((Θ [ WkTy + Θ + ]₃) [ σ ]₃) ]ₜₐ) (vinst ((Θ [ WkTy + Θ + ]₃) [ σ ]₃)) ≡
+--   vinst ((Θ [ WkTy + Θ + ]₃) [ τ ^ₛ + ]₃) [ ((id Γ ∘ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃)) ▹ₛᵢ[ + ]⟦
+--  Θ [ WkTy + Θ + ∘ τ ]₃ , teladapt ((Θ ⟦ whiskerLeft (WkTy + Θ +) μ ⟧₃) [ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ]ₜₐ) (vinst (Θ [ WkTy + Θ + ∘ σ ]₃)) ⟧) ^ₛ + ]₄
+-- foo2 {Γ} {Δ} {Θ} {σ} {τ} μ = sym (SubHdᵢ (id Γ ∘ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃)) ((Θ [ WkTy + Θ + ]₃) [ τ ^ₛ + ]₃) (teladapt ((Θ ⟦ whiskerLeft (WkTy + Θ +) μ ⟧₃) [ WkTel + (Θ [ WkTy + Θ + ∘ σ ]₃) ]ₜₐ) (vinst (Θ [ WkTy + Θ + ∘ σ ]₃))))
+-- {-#REWRITE foo2 #-}
 
--- postulate
--- -- TransAdEta
---   TransAdEta : {Γ Δ : Ctx}
---           {Θ : Tel Δ}
---           {σ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
---           {τ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
---           (μ : Trans Γ (Δ ▸[ + ]⟦ Θ , + ⟧) σ τ) →
---           μ ≡ _▸ₘ₊⟦_⟧_ {Γ} {Δ} {(WkTy + Θ +) ∘ σ} {(WkTy + Θ +) ∘ τ} (whiskerLeft (WkTy + Θ +) μ) {Θ} + {(tyvz + Θ) [ σ ▹▹₃[ + ]⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ]₁} {(tyvz + Θ) [ τ ▹▹₃[ + ]⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ]₁} ((tyvz + Θ) ⟦ μ w▹▹₃₊⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ⟧)
+sym∘whiskerRight : {Γ Δ Ξ Φ : Ctx} (σ : Sub Γ Δ) (σ' : Sub Δ Ξ) (τ τ' : Sub Ξ Φ) (μ : Trans Ξ Φ τ τ') → whiskerRight (whiskerRight μ  σ') σ ≡ whiskerRight μ (σ' ∘ σ)
+sym∘whiskerRight σ σ' τ τ' μ = sym (∘whiskerRight σ σ' τ τ' μ)
+{-#REWRITE sym∘whiskerRight #-}
+
+foo3 :
+
+postulate
+-- TransAdEta
+  -- TransAdEta : {Γ Δ : Ctx}
+  --         {Θ : Tel Δ}
+  --         {σ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
+  --         {τ : Sub Γ (Δ ▸[ + ]⟦ Θ , + ⟧)}
+  --         (μ : Trans Γ (Δ ▸[ + ]⟦ Θ , + ⟧) σ τ) →
+  --         μ ≡ _▸ₘ₊₊_ {Γ} {Δ} {(WkTy + Θ +) ∘ σ} {(WkTy + Θ +) ∘ τ} (whiskerLeft (WkTy + Θ +) μ) {Θ} {(tyvz + Θ) [ σ ▹▹₃[ + ]⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ]₁} {(tyvz + Θ) [ τ ▹▹₃[ + ]⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ]₁} ((tyvz + Θ) ⟦ μ w▹▹₃₊⟦ Θ [ WkTy + Θ + ]₃ , idₜₐ ⟧ ⟧)
 
 -- TransAdEta-
   -- TransAdEta- : {Γ Δ : Ctx}
@@ -146,15 +148,15 @@ _w▹▹₃₊⟦_,_⟧ {Γ} {Δ} {σ} {τ} μ {Θ} Θ' t = (whiskerRight μ (Wk
   --         (μ : Trans Γ (Δ ▸[ - ]⟦ Θ , + ⟧) σ τ) →
   --         _▸ₘ₋⟦_⟧_ {Γ} {Δ} {(WkTy - Θ +) ∘ σ} {(WkTy - Θ +) ∘ τ} (whiskerLeft (WkTy - Θ +) μ) {Θ} + {(tyvz - {Δ} Θ) [ τ ▹▹₃[ - ]⟦ Θ [ WkTy + Θ - ]₃ , idₜₐ ⟧ ]₁} {(tyvz - {Δ} Θ) [ σ ▹▹₃[ - ]⟦ Θ [ WkTy + Θ - ]₃ , idₜₐ ⟧ ]₁} ((tyvz - Θ) ⟦ {!μ w▹▹₃₋⟦ Θ [ WkTy + Θ - ]₃ , idₜₐ ⟧!} ⟧) ≡ {!!}
 
--- -- TransHdAd
---   TransHdAd : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
---           (μ : Trans Γ Δ σ τ)
---           {Θ : Tel Δ}
---           {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))}
---           {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
---           (a : Ad _ A (B [ (id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧) ]₁))
---           (ι : Inst Γ (Θ [ σ ]₃)) →
---           (tyvz + Θ ⟦ (_▸ₘ₊⟦_⟧_  {Γ} {Δ} {σ} {τ} μ {Θ} + {A} {B} a) ▹ₘᵢ₊⟦ Θ [ WkTy + Θ + ]₃ , ι ⟧ ⟧) ≡ ((a [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₐ))
+-- TransHdAd+
+  TransHdAd : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
+          (μ : Trans Γ Δ σ τ)
+          {Θ : Tel Δ}
+          {A : Ty (Γ ▹₃[ + ] (Θ [ σ ]₃))}
+          {B : Ty (Γ ▹₃[ + ] (Θ [ τ ]₃))}
+          (a : Ad _ A (B [ (id Γ ▹▹₃[ + ]⟦ _ , Θ ⟦ μ ⟧₃ ⟧) ]₁))
+          (ι : Inst Γ (Θ [ σ ]₃)) →
+          (tyvz + Θ ⟦ (_▸ₘ₊₊_  {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ▹ₘᵢ₊⟦ Θ [ WkTy + Θ + ]₃ , ι ⟧ ⟧) ≡ ((a [ id Γ ▹ₛᵢ[ + ]⟦ Θ [ σ ]₃ , ι ⟧ ]ₐ))
 
 
 -- -- TransHdAd-
@@ -165,4 +167,4 @@ _w▹▹₃₊⟦_,_⟧ {Γ} {Δ} {σ} {τ} μ {Θ} Θ' t = (whiskerRight μ (Wk
 --           {B : Ty (Γ ▹₃[ - ] (Θ [ σ ^ₛ - ]₃))}
 --           (a : Ad _ A (B [ id Γ ▹▹₃[ - ]⟦ _ , Θ ⟦ μ ^ₘ - ⟧₃ ⟧ ]₁))
 --           (ι : Inst (Γ ^ -) (Θ [ τ ^ₛ - ]₃)) →
---           (tyvz - Θ ⟦ (_▸ₘ₋⟦_⟧_  {Γ} {Δ} {σ} {τ} μ {Θ} + {A} {B} a) ▹ₘᵢ₋⟦ Θ [ WkTy + Θ - ]₃ , ι ⟧ ⟧) ≡ (a [ id Γ ▹ₛᵢ[ - ]⟦ Θ [ τ ^ₛ - ]₃ , ι ⟧ ]ₐ)
+--           (tyvz - Θ ⟦ (_▸ₘ₋₊_  {Γ} {Δ} {σ} {τ} μ {Θ} {A} {B} a) ▹ₘᵢ₋⟦ Θ [ WkTy + Θ - ]₃ , ι ⟧ ⟧) ≡ (a [ id Γ ▹ₛᵢ[ - ]⟦ Θ [ τ ^ₛ - ]₃ , ι ⟧ ]ₐ)
