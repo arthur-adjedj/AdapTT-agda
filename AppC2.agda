@@ -14,19 +14,19 @@ variable
 
 {- Appendix C.2 : Basic structure of AdapTT2 -}
 postulate
--- SubstId
+-- SubId
   id           : (Γ : Ctx) → Sub Γ Γ
 
--- SubstComp
+-- SubComp
   _∘_          : {Γ Δ Ξ : Ctx} → Sub Δ Ξ → Sub Γ Δ → Sub Γ Ξ
 
--- SubstRightUnitality
+-- SubRightUnitality
   ∘id : {Γ Δ : Ctx} {σ : Sub Γ Δ} → σ ∘ id Γ ≡ σ
 
--- SubstLeftUnitality
+-- SubLeftUnitality
   id∘ : {Γ Δ : Ctx} {σ : Sub Γ Δ} → id Δ ∘ σ ≡ σ
 
--- SubstAssoc
+-- SubAssoc
   ∘assoc : {Γ Δ Ξ Φ : Ctx} (σ : Sub Φ Δ) (δ : Sub Γ Φ) (τ : Sub Ξ Γ) →  (σ ∘ δ) ∘ τ ≡ σ ∘ δ ∘ τ
 
 -- AdId
