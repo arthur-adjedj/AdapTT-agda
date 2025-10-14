@@ -421,7 +421,6 @@ foo₂ σ {Θ₁} Θ₁' ta₁ = SubHdᵢ (WkTel + Θ₁) (Θ₁' [ σ ]₃) (te
 postulate
   ▹▹₃++ₜₐ : {Γ Δ : Ctx} (σ : Sub Γ Δ) {Θ₁ : Tel Γ} (Θ₁' : Tel Δ) (ta₁ : TelAd Γ Θ₁ (Θ₁' [ σ ]₃)) {Θ₂ : Tel (Γ ▹₃[ + ] Θ₁)} (Θ₂' : Tel (Δ ▹₃[ + ] Θ₁')) (ta₂ :  TelAd (Γ ▹₃[ + ] Θ₁) Θ₂ (Θ₂' [ σ ▹▹₃[ + ]⟦ Θ₁' , ta₁ ⟧ ]₃)) →
     σ ▹▹₃[ + ]⟦ Θ₁' ++ₜ Θ₂' , ta₁ ++ₜₐ⟦ Θ₂' [ σ ▹▹₃[ + ]⟦ Θ₁' , idₜₐ ⟧ ]₃ , ta₂ ⟧ ⟧ ≡ (σ ▹▹₃[ + ]⟦ Θ₁' , ta₁ ⟧ ▹▹₃[ + ]⟦ Θ₂' , ta₂ ⟧)
-  {-#REWRITE ▹▹₃++ₜₐ #-}
 
 foo₁ :    {Γ : Ctx}
     {Θ₁ Θ₁' : Tel Γ} (ta₁ : TelAd Γ Θ₁ Θ₁')
@@ -456,6 +455,7 @@ postulate
     (ta₃ :  TelAd _ Θ₃ (Θ₃' [ id Γ ▹▹₃[ + ]⟦ _ , ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧ ⟧ ]₃))
     → ta₁ ++ₜₐ⟦ Θ₂' ++ₜ Θ₃' , ta₂ ++ₜₐ⟦  Θ₃' [ (id Γ ▹▹₃[ + ]⟦ _ , ta₁ ⟧) ▹▹₃[ + ]⟦ Θ₂' , idₜₐ ⟧ ]₃ , ta₃  ⟧  ⟧ ≡  (ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧) ++ₜₐ⟦ Θ₃' , ta₃ ⟧
 
+-- WkTelExtTelAdapt
   WkTel++ₜteladapt :
     {Γ : Ctx}
       {Θ₁ Θ₁' : Tel Γ} (ta₁ : TelAd Γ Θ₁ Θ₁')
@@ -467,7 +467,6 @@ postulate
       ≡
       WkTel + (Θ₁ ++ₜ Θ₂)
       ▹ₛᵢ[ + ]⟦ Θ₁' ++ₜ Θ₂' , teladapt ((ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧) [ WkTel + (Θ₁ ++ₜ Θ₂) ]ₜₐ) (vinst (Θ₁ ++ₜ Θ₂)) ⟧
-  {-#REWRITE WkTel++ₜteladapt #-}
 
 -- TelAdExtIdTelAd
   _++ₜₐ⟦id⟧ :
