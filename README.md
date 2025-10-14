@@ -4,7 +4,7 @@ This folder contains the formalisation done for the POPL submission *AdapTT: Fun
 
 ## Building
 
-These files were compiled using Agda 2.7.0.1.
+These files were compiled using Agda 2.8.0.
 Instructions to obtain agda can be found at: https://agda.readthedocs.io/en/v2.8.0/getting-started/installation.html
 Once agda available the development can be built from command line using:
 
