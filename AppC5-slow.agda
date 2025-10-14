@@ -50,19 +50,6 @@ postulate
     (ta₃ :  TelAd _ Θ₃ (Θ₃' [ id Γ ▹▹₃[ + ]⟦ _ , ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧ ⟧ ]₃))
     → ta₁ ++ₜₐ⟦ Θ₂' ++ₜ Θ₃' , ta₂ ++ₜₐ⟦  Θ₃' [ (id Γ ▹▹₃[ + ]⟦ _ , ta₁ ⟧) ▹▹₃[ + ]⟦ Θ₂' , idₜₐ ⟧ ]₃ , ta₃  ⟧  ⟧ ≡  (ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧) ++ₜₐ⟦ Θ₃' , ta₃ ⟧
 
--- WkTelExtTelAdapt
-  WkTel++ₜteladapt :
-    {Γ : Ctx}
-      {Θ₁ Θ₁' : Tel Γ} (ta₁ : TelAd Γ Θ₁ Θ₁')
-      {Θ₂ : Tel (Γ ▹₃[ + ] Θ₁)} {Θ₂' : Tel (Γ ▹₃[ + ] Θ₁')}
-      (ta₂ :  TelAd (Γ ▹₃[ + ] Θ₁) Θ₂ (Θ₂' [ id Γ ▹▹₃[ + ]⟦ _ , ta₁ ⟧ ]₃)) →
-      WkTel + (Θ₁ ++ₜ Θ₂)
-        ▹ₛᵢ[ + ]⟦ Θ₁' , teladapt (ta₁ [ WkTel + (Θ₁ ++ₜ Θ₂) ]ₜₐ) (vinst Θ₁ [ WkTel + Θ₂ ]₄) ⟧
-        ▹ₛᵢ[ + ]⟦ Θ₂' , teladapt (ta₂ [ WkTel + Θ₂ ]ₜₐ) (vinst Θ₂) ⟧
-      ≡
-      WkTel + (Θ₁ ++ₜ Θ₂)
-      ▹ₛᵢ[ + ]⟦ Θ₁' ++ₜ Θ₂' , teladapt ((ta₁ ++ₜₐ⟦ Θ₂' , ta₂ ⟧) [ WkTel + (Θ₁ ++ₜ Θ₂) ]ₜₐ) (vinst (Θ₁ ++ₜ Θ₂)) ⟧
-
 -- TelAdExtIdTelAd
   _++ₜₐ⟦id⟧ :
     {Γ : Ctx}
