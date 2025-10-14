@@ -13,7 +13,7 @@ $ agda All.agda
 ```
 
 Note that type-checking these files is quite resource-intensive, and may take a long time to compile.
-For indication, compiling the files **excluding `AppC5-slow.agda` and `AppC6-slow.agda`** take ~17m20s on a Ryzen 7 9800X3D with 32Gb DDR5, and ~60m on an I7 10510U with 16GB DDR4.
+For indication, compiling the files **excluding `AppC5-slow.agda` and `AppC6-slow.agda`** take ~17m20s on a Ryzen 7 9800X3D with 32Gb DDR5, and ~50m on an I7 10510U with 16GB DDR4.
 
 ## Structure
 
