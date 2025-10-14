@@ -36,7 +36,7 @@ record ConDesc (Γₚ : Ctx) (Θᵢ : Tel Γₚ) : Set where
 IndDesc : (Γₚ : Ctx) (Θᵢ : Tel Γₚ) → Set
 IndDesc Γₚ Θᵢ = List (ConDesc Γₚ Θᵢ)
 
---recDataDef
+--RecDataDef
 recData :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
   → RecDesc Γₚ Θargs Θᵢ → Ty ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃))
@@ -56,14 +56,14 @@ recData {Γₚ = Γₚ}{Θᵢ = Θᵢ} {Θargs = Θargs} (mkRecDesc Θarit indIn
 
    ]₁)
 
---recDatas
+--RecDatas
 recDatas :
   {Γₚ  : Ctx} {Θᵢ Θargs : Tel Γₚ}
   → RecTel Γₚ Θargs Θᵢ
   → Tel ((Γₚ ▸[ + ]⟦ Θᵢ , + ⟧) ▹₃[ + ] (Θargs [ WkTy + Θᵢ + ]₃))
---𝗋𝖾𝖼𝖣𝖺𝗍𝖺𝗌Emp
+--R𝖾𝖼𝖣𝖺𝗍𝖺𝗌Emp
 recDatas {Θargs = Θargs} [] = ⋄ₜ
---𝗋𝖾𝖼𝖣𝖺𝗍𝖺𝗌Ext
+--R𝖾𝖼𝖣𝖺𝗍𝖺𝗌Ext
 recDatas {Θᵢ = Θᵢ} {Θargs = Θargs} (recDesc ∷ l) =
   (recDatas {Θargs = Θargs} l) ▹ₜ ((recData recDesc) [ WkTel + (recDatas l) ]₁)
 
