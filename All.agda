@@ -13,6 +13,7 @@ open import AppC4
 open import AppC5
 open import AppC6
 open import AppC6-slow
+open import AppC5-slow
 open import Pi
 open import IndSig
 open import IndAd
