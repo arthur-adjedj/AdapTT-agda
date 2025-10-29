@@ -38,7 +38,7 @@ The rewrite rules we add to emulate an extensional type theory are non-confluent
 The files `AppC5.agda`, `AppC5-slow.agda`, `Pi.agda` and `IndAd.agda` thus contain a few holes, which we have filled with the adequate term. We checked on paper that those terms have the desired types modulo equalities that we have declared and added as rewrite rules, but rewrite rules fail to trigger in those cases, causing Agda's type-checking to be incomplete, and rejecting the terms as ill-formed.
 
 Explanations of the agda options employed in the files:
-- `{-# OPTIONS --rewriting #-}`: activate rewrite rules https://agda.readthedocs.io/en/v2.8.0/language/rewriting.html#rewriting
-- `{-# OPTIONS  --allow-unsolved-metas #-}`: allows files with holes to compile, useful in the cases where agda's definitional equality fails, as mentioned above https://agda.readthedocs.io/en/latest/tools/command-line-options.html#cmdoption-allow-unsolved-metas
+- `{-# OPTIONS --rewriting #-}`: activate [rewrite rules](https://agda.readthedocs.io/en/v2.8.0/language/rewriting.html#rewriting)
+- `{-# OPTIONS  --allow-unsolved-metas #-}`: [allows files with holes to compile](https://agda.readthedocs.io/en/latest/tools/command-line-options.html#cmdoption-allow-unsolved-metas), useful in the cases where Agda's definitional equality fails, as mentioned above
 
-The point of this formalisation is not to verify any particular properties of our theory. Instead, because this theory contains a very large amount of typing rules, this formalisation was used to ensure our typing rules were all type-correct.
+The point of this formalisation is not to verify any particular properties of our theory. Instead, because the definition of the theory itself contains a large amount of typing rules, this formalisation was merely used to ensure our typing rules were all type-correct.

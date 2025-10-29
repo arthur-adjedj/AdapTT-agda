@@ -12,6 +12,7 @@ open import AppC2
 open import AppC3
 open import AppC4
 open import AppC5
+open import AppC5-slow
 open import AppC6
 
 -- provable results to help agda's computations
@@ -35,8 +36,6 @@ postulate
             (A : Ty (Γ ▹₃[ d ] (Θ [ σ ^ₛ d ]₃))) (ι : Inst (Γ ^ d) (Θ [ σ ^ₛ d ]₃)) →
             (tyvz d {Δ} Θ) [ (σ ▸ₛ[ d ]⟦ Θ , A ⟧) ▹ₛᵢ[ d ]⟦ Θ [ (WkTy d {Δ} Θ +) ^ₛ d ]₃ , ι ⟧ ]₁ ≡ A [ id Γ ▹ₛᵢ[ d ]⟦ Θ [ σ ^ₛ d ]₃ , ι ⟧ ]₁
   {-#REWRITE SubHdTy #-}
-
-  {-#REWRITE SubEtaTy #-}
 
 -- TransTlAd++
   whisker▸₊₊ : {Γ Δ : Ctx} {σ : Sub Γ Δ} {τ : Sub Γ Δ}
