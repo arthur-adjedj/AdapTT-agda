@@ -111,6 +111,14 @@ postulate
 -- SubTelAd
   _[_]ₜₐ  : {Γ Δ : Ctx} {A B : Tel Δ} → TelAd Δ A B → (σ : Sub Γ Δ) → TelAd Γ (A [ σ ]₃) (B [ σ ]₃)
 
+-- TelTransSub
+  ⟦⟧[]₃ : (Γ Δ Ξ : Ctx) (τ ξ : Sub Γ Δ) (μ : Trans Γ Δ τ ξ) (σ : Sub Ξ Γ)
+         (Θ : Tel Δ) → Θ ⟦ μ ⟧₃ [ σ ]ₜₐ ≡ Θ ⟦ whiskerRight μ σ ⟧₃
+-- TelSubTrans
+  []⟦⟧₃ : (Γ Δ Ξ : Ctx) (σ : Sub Γ Δ) (τ ξ : Sub Ξ Γ) (μ : Trans Ξ Γ τ ξ)
+         (Θ : Tel Δ) → Θ [ σ ]₃ ⟦ μ ⟧₃ ≡ (Θ ⟦ whiskerLeft σ μ ⟧₃)
+  {-#REWRITE []⟦⟧₃ #-}
+
 -- TelAdRightUnitality
   ∘ₜₐid : {Δ : Ctx} {A B : Tel Δ} (ta : TelAd Δ A B) → ta ∘ₜₐ idₜₐ ≡ ta
 
