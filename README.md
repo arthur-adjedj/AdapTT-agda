@@ -9,11 +9,14 @@ Instructions to obtain agda can be found at: https://agda.readthedocs.io/en/v2.8
 Once agda available the development can be built from command line using:
 
 ```
-$ agda All.agda
+$ agda All_but_slow.agda
 ```
 
-Note that type-checking these files is quite resource-intensive, and may take a long time to compile.
-For indication, compiling the files **excluding `AppC5-slow.agda` and `AppC6-slow.agda`** take ~17m20s on a Ryzen 7 9800X3D with 32Gb DDR5, and ~50m on an I7 10510U with 16GB DDR4.
+Note that this is quite resource-intensive, and may take a long time to compile.
+For indication the above took ~17m20s on a Ryzen 7 9800X3D with 32Gb DDR5, and ~50m on an I7 10510U with 16GB DDR4.
+
+The above command **does not compile the `AppC5-slow.agda` and `AppC6-slow.agda`** files: although we have managed to individually type-check the rules in these files (by commenting out all code but one rule), there seems to be a non-linear behaviour, where the type-checking of the entire file takes much longer (and much more memory) than that of the individual rules. We have not been able to complete the type-checking of these files (after 5+ hours and 30+GB memory use).
+Despite this, we still include these files for the sake of completeness and future reference.
 
 ## Structure
 
