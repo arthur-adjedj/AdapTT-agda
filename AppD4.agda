@@ -6,9 +6,9 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
-open import AppC2
-open import AppC3
+open import AppD1
+open import AppD2
+open import AppD3
 
 {- Appendix C.4 : Term variables in AdapTT2 -}
 postulate

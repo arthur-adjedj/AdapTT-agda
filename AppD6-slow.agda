@@ -7,13 +7,13 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
-open import AppC2
-open import AppC3
-open import AppC4
-open import AppC5
-open import AppC5-slow
-open import AppC6
+open import AppD1
+open import AppD2
+open import AppD3
+open import AppD4
+open import AppD5
+open import AppD5-slow
+open import AppD6
 
 -- provable results to help agda's computations
 

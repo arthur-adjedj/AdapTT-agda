@@ -7,11 +7,11 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
-open import AppC2
-open import AppC3
-open import AppC4
-open import AppC5
+open import AppD1
+open import AppD2
+open import AppD3
+open import AppD4
+open import AppD5
 
 postulate
   ▹▹₃++ₜₐ : {Γ Δ : Ctx} (σ : Sub Γ Δ) {Θ₁ : Tel Γ} (Θ₁' : Tel Δ) (ta₁ : TelAd Γ Θ₁ (Θ₁' [ σ ]₃)) {Θ₂ : Tel (Γ ▹₃[ + ] Θ₁)} (Θ₂' : Tel (Δ ▹₃[ + ] Θ₁')) (ta₂ :  TelAd (Γ ▹₃[ + ] Θ₁) Θ₂ (Θ₂' [ σ ▹▹₃[ + ]⟦ Θ₁' , ta₁ ⟧ ]₃)) →

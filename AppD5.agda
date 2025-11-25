@@ -7,10 +7,10 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
-open import AppC2
-open import AppC3
-open import AppC4
+open import AppD1
+open import AppD2
+open import AppD3
+open import AppD4
 
 
 {- Definition of parallel extension, and associated lemmas -}

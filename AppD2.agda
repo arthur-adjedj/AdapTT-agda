@@ -6,7 +6,7 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
+open import AppD1
 
 infixr 7 _∘_
 variable

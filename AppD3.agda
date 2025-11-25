@@ -6,8 +6,8 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std
 open import Dir
-open import AppC1
-open import AppC2
+open import AppD1
+open import AppD2
 
 {- Appendix C.3 : Empty context and context dualisation -}
 

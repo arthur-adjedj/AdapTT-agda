@@ -7,12 +7,12 @@ open import Agda.Builtin.Equality.Rewrite
 
 open import Std   public
 open import Dir   public
-open import AppC1 public
-open import AppC2 public
-open import AppC3 public
-open import AppC4 public
-open import AppC5 public
-open import AppC6 public
+open import AppD1 public
+open import AppD2 public
+open import AppD3 public
+open import AppD4 public
+open import AppD5 public
+open import AppD6 public
 
 -- -- These rules are not necessary for this file. Are they necessary for the other files?
 -- {-#REWRITE *ₘassoc *ₘid id*ₘ #-}
